@@ -40,5 +40,4 @@ jobs:
         gosec .
 
     - name: Docker Build
-      uses: actions/checkout@v4
       run: docker build . --file Dockerfile --tag password-generator-api:${GITHUB_REF##*/}
