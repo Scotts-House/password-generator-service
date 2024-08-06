@@ -5,10 +5,13 @@ name: Go Build
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+#  push:
+#    branches: [ "main" ]
+#  pull_request:
+#    branches: [ "main" ]
+  release:
+    types: [ published ]
+
 
 jobs:
 
@@ -16,7 +19,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
@@ -36,3 +38,7 @@ jobs:
       run: |
         go install github.com/securego/gosec/v2/cmd/gosec@latest
         gosec .
+
+    - name: Docker Build
+      uses: actions/checkout@v4
+      run: docker build . --file Dockerfile --tag password-generator-api:${GITHUB_REF##*/}
